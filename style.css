@@ -40,6 +40,7 @@ img {
 #reflection-title {
   position: relative;
   z-index: 1;
+  top: 30px;
   text-align: center;
   margin-top: 4rem;
   margin-bottom: 3rem;
@@ -60,6 +61,7 @@ img {
   align-items: center;
   padding: 0 1rem;
   box-sizing: border-box;
+  bottom: -90px;
 }
 
 /* Terminal display */
@@ -103,7 +105,7 @@ img {
 /* Footer styling */
 footer {
   position: relative;
-  bottom: -100px;
+  bottom: -175px;
   z-index: 1;
   text-align: center;
   font-size: 0.9rem;
