@@ -1,48 +1,47 @@
-const reflectionBox = document.getElementById("reflection-box");
-const refreshButton = document.getElementById("refresh-btn");
-
 async function getReflection() {
-  reflectionBox.innerText = "Thinking...";
   console.log("Starting reflection request...");
 
-  try {
-    const postUrl = "https://circuit-master-eternal-torment.hf.space/gradio_api/call/predict";
-    console.log("POSTing to:", postUrl);
+  const predictUrl = "https://circuit-master-eternal-torment.hf.space/gradio_api/call/predict";
 
-    const postResponse = await fetch(postUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ data: [] }) // No input expected
+  console.log("POSTing to:", predictUrl);
+  const postResponse = await fetch(predictUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ data: [] })
+  });
+
+  const postJson = await postResponse.json();
+  console.log("POST response:", postJson);
+
+  const eventId = postJson.event_id;
+  const getUrl = `${predictUrl}/${eventId}`;
+  console.log("GETting from:", getUrl);
+
+  const getResponse = await fetch(getUrl);
+  const rawText = await getResponse.text();
+  console.log("Raw GET response:", rawText);
+
+  // Parse SSE-style response manually
+  const events = rawText
+    .split("\n\n")
+    .filter(chunk => chunk.includes("event:"))
+    .map(chunk => {
+      const lines = chunk.split("\n");
+      const event = lines.find(l => l.startsWith("event:"))?.slice(7).trim();
+      const data = lines.find(l => l.startsWith("data:"))?.slice(6).trim();
+      return { event, data };
     });
 
-    const postData = await postResponse.json();
-    console.log("POST response:", postData);
+  console.log("Parsed events:", events);
 
-    const eventId = postData.event_id;
-    if (!eventId) throw new Error("No event_id returned.");
+  const final = events.find(e => e.event === "complete");
+  if (!final) throw new Error("No completion event found");
 
-    const getUrl = `https://circuit-master-eternal-torment.hf.space/gradio_api/call/predict/${eventId}`;
-    console.log("GETting from:", getUrl);
+  const reflection = JSON.parse(final.data)[0];
+  console.log("Final reflection:", reflection);
 
-    // Wait a moment for the result to be ready
-    await new Promise(r => setTimeout(r, 800));
-
-    const getResponse = await fetch(getUrl);
-    const getText = await getResponse.text();
-
-    console.log("Raw GET response:", getText);
-
-    const parsed = JSON.parse(getText);
-    const reflection = parsed.data?.[0] || "Empty reflection.";
-    reflectionBox.innerText = reflection;
-
-  } catch (err) {
-    console.error("Fatal error during reflection retrieval:", err);
-    reflectionBox.innerText = "I am silent... something went wrong.";
-  }
+  document.getElementById("reflection-box").textContent = reflection;
 }
 
-refreshButton.addEventListener("click", getReflection);
-window.addEventListener("load", getReflection);
+document.addEventListener("DOMContentLoaded", getReflection);
+document.getElementById("refresh-btn").addEventListener("click", getReflection);
