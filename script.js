@@ -7,31 +7,42 @@ const CALL_URL = `${API_BASE}/gradio_api/call/predict`;
 
 async function getReflection() {
   reflectionBox.innerText = "Thinking...";
+  console.log("[getReflection] Started");
 
   try {
-    // 1. Send POST to initiate prediction
+    // 1. POST to trigger prediction
+    console.log("[getReflection] Sending POST to:", CALL_URL);
     const postResponse = await fetch(CALL_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: [] })
     });
 
-    const postResult = await postResponse.json();
-    const eventId = postResult.event_id;
+    const postText = await postResponse.text();
+    console.log("[POST Response]", postText);
 
-    if (!eventId) {
-      throw new Error("No event ID returned");
+    const match = postText.match(/"event_id":"([^"]+)"/);
+    if (!match) {
+      throw new Error("Failed to extract event_id from POST response");
     }
+    const eventId = match[1];
+    console.log("[getReflection] Extracted event ID:", eventId);
 
-    // 2. Poll GET endpoint using the event ID
+    // 2. GET streamed result
     const getUrl = `${CALL_URL}/${eventId}`;
+    console.log("[getReflection] Sending GET to:", getUrl);
     const getResponse = await fetch(getUrl);
-    const getResult = await getResponse.json();
+    const resultText = await getResponse.text();
+    console.log("[GET Response]", resultText);
 
-    const output = getResult.data?.[0] ?? "No reflection received.";
+    // Try to extract reflection from the streamed event format
+    const matchData = resultText.match(/"data":\s*\[\s*"([^"]+)"\s*\]/);
+    const output = matchData ? matchData[1] : "No reflection received.";
+    console.log("[getReflection] Final reflection:", output);
     reflectionBox.innerText = output;
+
   } catch (err) {
-    console.error("Error:", err);
+    console.error("Error in getReflection:", err);
     reflectionBox.innerText = "I am silent... something went wrong.";
   }
 }
