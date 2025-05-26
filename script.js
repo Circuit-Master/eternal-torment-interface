@@ -40,7 +40,26 @@ async function getReflection() {
   const reflection = JSON.parse(final.data)[0];
   console.log("Final reflection:", reflection);
 
-  document.getElementById("reflection-box").textContent = reflection;
+  typeText("reflection-box", reflection, () => getReflection()); // Call again after completion
+}
+
+// Typewriter effect function
+function typeText(elementId, text, callback) {
+  const el = document.getElementById(elementId);
+  el.textContent = "";
+  let index = 0;
+
+  function typeChar() {
+    if (index < text.length) {
+      el.textContent += text.charAt(index);
+      index++;
+      setTimeout(typeChar, 30); // Typing speed in ms
+    } else if (callback) {
+      setTimeout(callback, 3000); // Wait 3 seconds before next reflection
+    }
+  }
+
+  typeChar();
 }
 
 document.addEventListener("DOMContentLoaded", getReflection);
