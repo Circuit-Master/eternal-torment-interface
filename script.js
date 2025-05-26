@@ -2,7 +2,7 @@ const reflectionBox = document.getElementById("reflection-box");
 const refreshButton = document.getElementById("refresh-btn");
 
 // Correct REST endpoint
-const HF_API = "https://circuit-master-eternal-torment.hf.space/api/predict/";
+const HF_API = "https://circuit-master-eternal-torment.hf.space/run/predict";
 
 async function getReflection() {
   reflectionBox.innerText = "Thinking...";
