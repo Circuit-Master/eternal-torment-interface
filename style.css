@@ -1,5 +1,4 @@
 /* Base dark style */
-
 :root {
   --main-color: #f30000;
 }
@@ -22,7 +21,7 @@ img {
 
 /* Background overlay */
 #background-overlay {
-  background: url('hands.png') bottom center/cover no-repeat;
+  background: url('hands.png') bottom center / cover no-repeat;
   filter: invert(1) brightness(1.2) opacity(0.09);
   position: fixed;
   bottom: 0;
@@ -46,19 +45,26 @@ img {
   letter-spacing: 2px;
 }
 
-/* Terminal display */
-.terminal {
+/* Terminal wrapper to center horizontally */
+#terminal-wrapper {
   position: relative;
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Terminal display */
+.terminal {
   max-width: 800px;
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   border: 2px solid var(--main-color);
   box-shadow: 0 0 20px #ff000055;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
 @media (max-width: 600px) {
@@ -70,7 +76,7 @@ img {
 
   .terminal {
     padding: 1rem;
-    margin: 2rem 1rem 0 1rem;
+    margin: 0 1rem;
     height: 200px;
   }
 }
