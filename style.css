@@ -35,7 +35,7 @@ body {
   padding: 2rem;
   max-width: 800px;
   margin: auto;
-  margin-top: 10vh;
+  margin-top: 25vh;
   background-color: rgba(0, 0, 0, 0.8);
   border: 2px solid var(--main-color);
   box-shadow: 0 0 20px #ff000055;
