@@ -12,6 +12,10 @@ body {
   height: 100vh;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 img {
@@ -37,28 +41,30 @@ img {
   position: relative;
   z-index: 1;
   text-align: center;
-  margin-top: 3rem;
-  margin-bottom: 1.5rem;
-  font-size: 2rem;
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+  font-size: 3rem;
   font-weight: bold;
   text-shadow: 0 0 10px #f30000aa, 0 0 20px #f3000055;
   letter-spacing: 2px;
 }
 
-/* Terminal wrapper to center horizontally */
-#terminal-wrapper {
+/* Main container */
+.main-container {
   position: relative;
   z-index: 1;
-  display: flex;
-  justify-content: center;
   width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 /* Terminal display */
 .terminal {
-  max-width: 800px;
-  width: 90%; /* or something smaller than 100% */
-  margin: 0 auto; /* <--- this will center it horizontally */
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   border: 2px solid var(--main-color);
   box-shadow: 0 0 20px #ff000055;
@@ -66,20 +72,6 @@ img {
   text-align: center;
   padding: 2rem;
   box-sizing: border-box;
-}
-
-@media (max-width: 600px) {
-  #background-overlay {
-    background-size: contain;
-    background-position: bottom center;
-    object-fit: scale-down;
-  }
-
-  .terminal {
-    padding: 1rem;
-    margin: 0 1rem;
-    height: 200px;
-  }
 }
 
 /* Typewriter effect styling */
@@ -106,4 +98,31 @@ img {
 #refresh-btn:hover {
   background-color: var(--main-color);
   color: black;
+}
+
+/* Footer styling */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #ff4444;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+  max-width: 90%;
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  #background-overlay {
+    background-size: contain;
+    background-position: bottom center;
+    object-fit: scale-down;
+  }
+
+  .terminal {
+    padding: 1rem;
+    height: 200px;
+  }
 }
