@@ -1,67 +1,48 @@
 const reflectionBox = document.getElementById("reflection-box");
 const refreshButton = document.getElementById("refresh-btn");
 
-const API_BASE = "https://circuit-master-eternal-torment.hf.space";
-const CALL_URL = `${API_BASE}/gradio_api/call/predict`;
-
 async function getReflection() {
   reflectionBox.innerText = "Thinking...";
   console.log("Starting reflection request...");
 
   try {
-    console.log("POSTing to:", CALL_URL);
-    const postResponse = await fetch(CALL_URL, {
+    const postUrl = "https://circuit-master-eternal-torment.hf.space/gradio_api/call/predict";
+    console.log("POSTing to:", postUrl);
+
+    const postResponse = await fetch(postUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [] })
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ data: [] }) // No input expected
     });
 
-    const postRaw = await postResponse.text();
-    console.log("Raw POST response:");
-    console.log(postRaw);
+    const postData = await postResponse.json();
+    console.log("POST response:", postData);
 
-    // Attempt JSON parse (will fail if it's event-stream)
-    let postResult;
-    try {
-      postResult = JSON.parse(postRaw);
-      console.log("Parsed POST response:", postResult);
-    } catch (e) {
-      console.error("POST response is not JSON. Maybe a server event stream?");
-      reflectionBox.innerText = "Unexpected server response.";
-      return;
-    }
+    const eventId = postData.event_id;
+    if (!eventId) throw new Error("No event_id returned.");
 
-    const eventId = postResult.event_id;
-    if (!eventId) {
-      console.error("event_id not found in POST response");
-      reflectionBox.innerText = "Missing event ID from server.";
-      return;
-    }
-
-    const getUrl = `${CALL_URL}/${eventId}`;
+    const getUrl = `https://circuit-master-eternal-torment.hf.space/gradio_api/call/predict/${eventId}`;
     console.log("GETting from:", getUrl);
+
+    // Wait a moment for the result to be ready
+    await new Promise(r => setTimeout(r, 800));
+
     const getResponse = await fetch(getUrl);
-    const getRaw = await getResponse.text();
-    console.log("Raw GET response:");
-    console.log(getRaw);
+    const getText = await getResponse.text();
 
-    let getResult;
-    try {
-      getResult = JSON.parse(getRaw);
-      console.log("Parsed GET response:", getResult);
-    } catch (e) {
-      console.error("GET response is not JSON.");
-      reflectionBox.innerText = "Malformed response from server.";
-      return;
-    }
+    console.log("Raw GET response:", getText);
 
-    const output = getResult.data?.[0] ?? "No reflection received.";
-    reflectionBox.innerText = output;
+    const parsed = JSON.parse(getText);
+    const reflection = parsed.data?.[0] || "Empty reflection.";
+    reflectionBox.innerText = reflection;
+
   } catch (err) {
     console.error("Fatal error during reflection retrieval:", err);
     reflectionBox.innerText = "I am silent... something went wrong.";
   }
 }
 
-getReflection();
 refreshButton.addEventListener("click", getReflection);
+window.addEventListener("load", getReflection);
