@@ -47,7 +47,7 @@ body {
   z-index: 1;
   padding: 2rem;
   max-width: 800px;
-  height: 350px;
+  height: 200px;
   margin: 0 auto;
   background-color: rgba(0, 0, 0, 0.8);
   border: 2px solid var(--main-color);
@@ -63,6 +63,7 @@ body {
   #background-overlay {
     background-size: contain;
     background-position: bottom center;
+    object-fit: scale-down;
   }
 
   .terminal {
@@ -81,10 +82,10 @@ body {
 
 /* Button styling */
 #refresh-btn {
-  background-color: #111;
+  background-color: #000000;
   border: 1px solid var(--main-color);
   color: var(--main-color);
-  padding: 0.75rem 1.5rem;
+  padding: 2rem;
   font-size: 1.1rem;
   margin: 1rem auto 0 auto;
   display: block;
