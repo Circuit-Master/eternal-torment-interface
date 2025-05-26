@@ -2,7 +2,7 @@ const reflectionBox = document.getElementById("reflection-box");
 const refreshButton = document.getElementById("refresh-btn");
 
 // This is the endpoint for your Hugging Face Space
-const HF_API = "https://Circuit-Master-eternal-torment.hf.space/run/predict";
+const HF_API = "https://circuit-master-eternal-torment.hf.space/api/predict/";
 
 // Fetch a reflection
 async function getReflection() {
