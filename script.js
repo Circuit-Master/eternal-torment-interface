@@ -1,22 +1,34 @@
 const reflectionBox = document.getElementById("reflection-box");
 const refreshButton = document.getElementById("refresh-btn");
 
-// Correct REST endpoint
-const HF_API = "https://circuit-master-eternal-torment.hf.space/api/predict/";
+// Hugging Face Gradio API endpoints
+const API_BASE = "https://circuit-master-eternal-torment.hf.space";
+const CALL_URL = `${API_BASE}/gradio_api/call/predict`;
 
 async function getReflection() {
   reflectionBox.innerText = "Thinking...";
+
   try {
-    const response = await fetch(HF_API, {
+    // 1. Send POST to initiate prediction
+    const postResponse = await fetch(CALL_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ data: [] }) // No input needed
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: [] })
     });
 
-    const result = await response.json();
-    const output = result.data[0];
+    const postResult = await postResponse.json();
+    const eventId = postResult.event_id;
+
+    if (!eventId) {
+      throw new Error("No event ID returned");
+    }
+
+    // 2. Poll GET endpoint using the event ID
+    const getUrl = `${CALL_URL}/${eventId}`;
+    const getResponse = await fetch(getUrl);
+    const getResult = await getResponse.json();
+
+    const output = getResult.data?.[0] ?? "No reflection received.";
     reflectionBox.innerText = output;
   } catch (err) {
     console.error("Error:", err);
