@@ -1,64 +1,61 @@
-/* Base styling */
+/* Base dark style */
 body {
-  background-color: #0a0a0a;
-  color: #e94444;
-  font-family: 'Courier New', Courier, monospace;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   margin: 0;
+  padding: 0;
+  background-color: black;
+  font-family: 'Courier New', Courier, monospace;
+  color: #00ffcc;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
 }
 
-/* Title */
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  color: #ff3c3c;
-  text-shadow: 0 0 10px #ff3c3c;
+/* Background overlay */
+#background-overlay {
+  background: url('hands.png') center/cover no-repeat;
+  filter: invert(1) brightness(1.2) opacity(0.07); /* invert and soften */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
-/* Tagline */
-.tagline {
-  font-style: italic;
-  color: #aa2222;
-  margin-bottom: 2rem;
+/* Terminal display */
+.terminal {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+  margin-top: 10vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 2px solid #00ffcc;
+  box-shadow: 0 0 20px #00ffcc55;
+  border-radius: 8px;
 }
 
-/* Reflection box */
+/* Typewriter effect styling */
 #reflection-box {
-  background-color: #1a1a1a;
-  border: 2px solid #440000;
-  padding: 1.5rem;
-  width: 90%;
-  max-width: 600px;
-  text-align: center;
   font-size: 1.2rem;
-  box-shadow: 0 0 20px #220000;
-  margin-bottom: 2rem;
+  white-space: pre-wrap;
+  min-height: 100px;
 }
 
-/* Button */
+/* Button styling */
 #refresh-btn {
-  background-color: #330000;
-  color: #ff4d4d;
-  border: 1px solid #660000;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
+  background-color: #111;
+  border: 1px solid #00ffcc;
+  color: #00ffcc;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1rem;
+  cursor: pointer;
 }
 
 #refresh-btn:hover {
-  background-color: #550000;
-  transform: scale(1.05);
-}
-
-/* Footer */
-footer {
-  position: absolute;
-  bottom: 10px;
-  font-size: 0.85rem;
-  color: #552222;
+  background-color: #00ffcc;
+  color: black;
 }
