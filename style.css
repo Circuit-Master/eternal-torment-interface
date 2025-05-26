@@ -28,18 +28,36 @@ body {
   pointer-events: none;
 }
 
+/* Title */
+#reflection-title {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
 /* Terminal display */
 .terminal {
   position: relative;
   z-index: 1;
   padding: 2rem;
   max-width: 800px;
-  margin: auto;
-  margin-top: 25vh;
+  margin: 2rem auto 0 auto;
+  top: 50%;
+  transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.8);
   border: 2px solid var(--main-color);
   box-shadow: 0 0 20px #ff000055;
   border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .terminal {
+    padding: 1rem;
+    margin: 2rem 1rem 0 1rem;
+  }
 }
 
 /* Typewriter effect styling */
