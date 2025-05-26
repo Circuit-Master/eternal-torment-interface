@@ -1,10 +1,9 @@
 const reflectionBox = document.getElementById("reflection-box");
 const refreshButton = document.getElementById("refresh-btn");
 
-// This is the endpoint for your Hugging Face Space
+// Correct REST endpoint
 const HF_API = "https://circuit-master-eternal-torment.hf.space/api/predict/";
 
-// Fetch a reflection
 async function getReflection() {
   reflectionBox.innerText = "Thinking...";
   try {
@@ -13,7 +12,7 @@ async function getReflection() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ data: [] }) // No input, triggers random generation
+      body: JSON.stringify({ data: [] }) // No input needed
     });
 
     const result = await response.json();
@@ -25,6 +24,5 @@ async function getReflection() {
   }
 }
 
-// Auto-run on load
 getReflection();
 refreshButton.addEventListener("click", getReflection);
