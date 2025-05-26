@@ -103,6 +103,7 @@ img {
 /* Footer styling */
 footer {
   position: relative;
+  bottom: -100px;
   z-index: 1;
   text-align: center;
   font-size: 0.9rem;
